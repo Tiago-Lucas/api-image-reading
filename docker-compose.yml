@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mongo-image-reading:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb-image-reading-volume:/data/db
+    restart: always
+
+
+  api:
+    container_name: api-image-reading
+    build: ../api-image-reading
+    restart: always
+    ports:
+      - '5002:5002'
+    depends_on:
+      - mongo-image-reading
+    env_file:
+      - ./.env
+
+volumes:
+  mongodb-image-reading-volume:
